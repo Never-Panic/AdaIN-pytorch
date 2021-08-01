@@ -13,7 +13,7 @@ parser.add_argument('--style', type=str,
                     help='File path to the style image')
 parser.add_argument('--vgg_path', type=str, default='./vgg_normalised.pth')
 parser.add_argument('--checkpoint', type=str, default='./checkpoints/network_checkpoint.pth')
-parser.add_argument('--output', type=str, default='output',
+parser.add_argument('--output', type=str, default='./output',
                     help='Directory to save the output image(s)')
 args = parser.parse_args()
 
@@ -32,8 +32,11 @@ network.eval()
 network.to(device)
 
 # load image
-content = T.ToTensor(Image.open(args.content))
-style = T.ToTensor(Image.open(args.style))
+transform = T.Compose([
+                T.ToTensor(),
+            ])
+content = transform(Image.open(args.content))
+style = transform(Image.open(args.style))
 style = style.to(device).unsqueeze(0)
 content = content.to(device).unsqueeze(0)
 

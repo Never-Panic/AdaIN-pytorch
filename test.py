@@ -41,7 +41,7 @@ style = style.to(device).unsqueeze(0)
 content = content.to(device).unsqueeze(0)
 
 # style transfer
-with torch.no_grad():  
+with torch.inference_mode(): 
     out_image = network.style_transfer(content, style)
 
 # save image

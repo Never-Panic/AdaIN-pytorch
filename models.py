@@ -82,9 +82,7 @@ class Encoder(nn.Module):
         self.relu4_1 = nn.Sequential(*vgg19_layers[18:31])
 
         #fix parameters
-        for layer in [self.relu1_1, self.relu2_1, self.relu3_1, self.relu4_1]:
-            for parameter in layer.parameters():
-                parameter.requires_grad = False
+        self.requires_grad_(False)
 
 
     def forward(self, x):

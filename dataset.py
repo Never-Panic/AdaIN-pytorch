@@ -2,7 +2,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 import torchvision.transforms as T
 
-def getDataLoader(dataset_path, batch_size, num_workers=5):
+def getDataLoader(dataset_path, batch_size, num_workers=2):
     transform = T.Compose([
                 T.Resize(size=(512, 512)),
                 T.RandomCrop(256),
@@ -10,6 +10,6 @@ def getDataLoader(dataset_path, batch_size, num_workers=5):
             ])
 
     train_dataset = datasets.ImageFolder(dataset_path, transform=transform)
-    dataloader = DataLoader(train_dataset, batch_size=batch_size, num_workers=num_workers)
+    dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
 
     return dataloader

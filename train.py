@@ -62,7 +62,7 @@ content_loader = getDataLoader(args.content_dir, args.batch_size)
 style_loader = getDataLoader(args.style_dir, args.batch_size)
 
 # optimizer
-optimizer = torch.optim.Adam(network.parameters(), lr=args.lr)
+optimizer = torch.optim.Adam(network.decoder.parameters(), lr=args.lr)
 
 # training loop
 for epoch in range(args.epoch):

@@ -122,7 +122,7 @@ class Decoder(nn.Module):
             nn.Conv2d(64, 64, 3, padding=1, padding_mode='reflect'),
             nn.ReLU(), # relu1-2
             nn.Conv2d(64, 3, 3, padding=1, padding_mode='reflect'),
-            nn.Conv2d(3, 3, 1),
+            # nn.Conv2d(3, 3, 1),
             nn.ReLU(), # relu1-1
         )
 

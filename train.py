@@ -6,6 +6,7 @@ import torch
 import torch.backends.cudnn as cudnn
 from models import Network
 from dataset import getDataLoader
+from PIL import Image, ImageFile
 
 '''
 run command:
@@ -38,13 +39,15 @@ parser.add_argument('--max_iter', type=int, default=160000)
 parser.add_argument('--batch_size', type=int, default=8)
 parser.add_argument('--style_weight', type=float, default=10.0)
 parser.add_argument('--content_weight', type=float, default=1.0)
-parser.add_argument('--save_every', type=int, default=10000)
-parser.add_argument('--print_every', type=int, default=2000)
+parser.add_argument('--save_every', type=int, default=5000)
+parser.add_argument('--print_every', type=int, default=100)
 parser.add_argument("--checkpoint_model", type=str, help="Optional path to checkpoint model")
 args = parser.parse_args()
 
 # basic setting
 cudnn.benchmark = True
+Image.MAX_IMAGE_PIXELS = None  # Disable DecompressionBombError
+ImageFile.LOAD_TRUNCATED_IMAGES = True # Disable OSError: image file is truncated
 
 device = torch.device('cuda')
 save_dir = Path(args.save_dir)

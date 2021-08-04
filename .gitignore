@@ -1,4 +1,5 @@
 vgg_normalised.pth
 __pycache__/
 logs/
-checkpoints
+checkpoints/
+Execute.ipynb

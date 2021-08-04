@@ -1,4 +1,4 @@
 vgg_normalised.pth
-./__pycache__
-./logs
-./checkpoints
+__pycache__/
+logs/
+checkpoints

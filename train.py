@@ -7,6 +7,8 @@ import torch.backends.cudnn as cudnn
 from models import Network
 from dataset import getDataLoader
 from PIL import Image, ImageFile
+from torchvision.utils import make_grid
+import torchvision.transforms.functional as TF
 
 '''
 run command:
@@ -26,12 +28,12 @@ parser.add_argument('--content_dir', type=str,
 parser.add_argument('--style_dir', type=str,
                     help='Directory path to a batch of style images',
                     default='/data2/liukunhao/datasets/WikiArt')
-parser.add_argument('--vgg_path', type=str, default='./vgg_normalised.pth')
+parser.add_argument('--vgg_path', type=str, default='/data2/liukunhao/checkpoints/vgg/vgg19_normalised.pth')
 
 # training options
-parser.add_argument('--save_dir', default='./checkpoints',
+parser.add_argument('--save_dir', default='/data2/liukunhao/checkpoints/Adain',
                     help='Directory to save the model')
-parser.add_argument('--log_dir', default='./logs',
+parser.add_argument('0--log_dir', default='/data2/liukunhao/runs/Adain',
                     help='Directory to save the log')
 parser.add_argument('--lr', type=float, default=1e-4)
 parser.add_argument('--lr_decay', type=float, default=5e-5)
@@ -39,8 +41,8 @@ parser.add_argument('--max_iter', type=int, default=160000)
 parser.add_argument('--batch_size', type=int, default=8)
 parser.add_argument('--style_weight', type=float, default=10.0)
 parser.add_argument('--content_weight', type=float, default=1.0)
-parser.add_argument('--save_every', type=int, default=5000)
-parser.add_argument('--print_every', type=int, default=100)
+parser.add_argument('--save_every', type=int, default=10000)
+parser.add_argument('--print_every', type=int, default=400)
 parser.add_argument("--checkpoint_model", type=str, help="Optional path to checkpoint model")
 args = parser.parse_args()
 
@@ -90,12 +92,19 @@ for i in tqdm(range(args.max_iter)):
     optimizer.step()
 
     if i % args.print_every==0:
-        print(f'\nloss_content: {loss_c.item():.1f}\n loss_style: {loss_s.item():.1f}')
         writer.add_scalar('loss_content', loss_c.item(), i + 1)
         writer.add_scalar('loss_style', loss_s.item(), i + 1)
+        with torch.no_grad():
+            content = content_images[0].unsqueeze(0)
+            style = style_images[0].unsqueeze(0)
+            out_image = network.style_transfer(content, style)
+            content = TF.resize(content, out_image.size()[-2:])
+            style = TF.resize(style, out_image.size()[-2:])
+            writer.add_image('content-output-style', make_grid([content.squeeze(), out_image.squeeze(), style.squeeze()]), global_step=i + 1)
+
 
     if (i + 1) % args.save_every == 0 or (i + 1) == args.max_iter:
-        torch.save(network.state_dict(), f"{args.save_dir}/loss_c{loss_c.item():.1f}loss_s{loss_s.item():.1f}.pth")
+        torch.save(network.state_dict(), f"{args.save_dir}/iter{i}loss_c{loss_c.item():.1f}loss_s{loss_s.item():.1f}.pth")
 
 writer.flush()
 writer.close()

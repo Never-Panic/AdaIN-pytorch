@@ -1,7 +1,8 @@
 vgg_normalised.pth
+Execute.ipynb
+
 __pycache__/
 logs/
 checkpoints/
 style/
 content/
-Execute.ipynb

@@ -33,7 +33,7 @@ parser.add_argument('--vgg_path', type=str, default='/data2/liukunhao/checkpoint
 # training options
 parser.add_argument('--save_dir', default='/data2/liukunhao/checkpoints/Adain',
                     help='Directory to save the model')
-parser.add_argument('0--log_dir', default='/data2/liukunhao/runs/Adain',
+parser.add_argument('--log_dir', default='/data2/liukunhao/runs/Adain',
                     help='Directory to save the log')
 parser.add_argument('--lr', type=float, default=1e-4)
 parser.add_argument('--lr_decay', type=float, default=5e-5)
@@ -100,8 +100,7 @@ for i in tqdm(range(args.max_iter)):
             out_image = network.style_transfer(content, style)
             content = TF.resize(content, out_image.size()[-2:])
             style = TF.resize(style, out_image.size()[-2:])
-            writer.add_image('content-output-style', make_grid([content.squeeze(), out_image.squeeze(), style.squeeze()]), global_step=i + 1)
-
+            writer.add_image('content-output-style', make_grid([content.squeeze(), out_image.squeeze(), style.squeeze()], normalize=True), global_step=i + 1)
 
     if (i + 1) % args.save_every == 0 or (i + 1) == args.max_iter:
         torch.save(network.state_dict(), f"{args.save_dir}/iter{i}loss_c{loss_c.item():.1f}loss_s{loss_s.item():.1f}.pth")

@@ -3,9 +3,9 @@ CUDA_VISIBLE_DEVICES=$1 python3 train.py \
 --lr_decay=5e-5 \
 --batch_size=8 \
 --style_weight=10 \
---content_weight=1 \
+--content_weight=5 \
 --save_every=10000 \
 --print_every=400 \
 --max_iter=200000 \
---log_dir=/data2/liukunhao/runs/Adain/lr5e-5_bs8_s10_c1 \
---save_dir /data2/liukunhao/checkpoints/Adain/lr5e-5_bs8_s10_c1
+--log_dir=/data2/liukunhao/runs/Adain/lr5e-5_bs8_s10_c5 \
+--save_dir /data2/liukunhao/checkpoints/Adain/lr5e-5_bs8_s10_c5

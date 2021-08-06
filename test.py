@@ -19,7 +19,7 @@ parser.add_argument('--content', type=str,
 parser.add_argument('--style', type=str,
                     default='./style/starry_night.jpg',
                     help='File path to the style image')
-parser.add_argument('--vgg_path', type=str, default='./vgg_normalised.pth')
+parser.add_argument('--vgg_path', type=str, default='/data2/liukunhao/checkpoints/vgg/vgg19_normalised.pth')
 parser.add_argument('--checkpoint', type=str, default='./checkpoints/loss_c1.7loss_s5.4.pth')
 parser.add_argument('--output', type=str, default='./output',
                     help='Directory to save the output image(s)')
